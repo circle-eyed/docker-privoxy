@@ -1,0 +1,25 @@
+schemaVersion: '2.0.0'
+
+commandTests:
+    - name: 'group privoxy'
+      command: 'cat'
+      args: ['/etc/group']
+      expectedOutput: ['privoxy']
+    - name: 'user privoxy'
+      command: 'cat'
+      args: ['/etc/passwd']
+      expectedOutput: ['privoxy']
+
+fileExistenceTests:
+    - name: 'privoxy'
+      path: '/usr/sbin/privoxy'
+      shouldExist: true
+      permissions: '-rwxr-xr-x'
+
+metadataTest:
+    entrypoint: ['docker-entrypoint.sh']
+    exposedPorts: ['8118']
+    labels:
+        - key: 'maintainer'
+          value: 'cyclops.zhao@protonmail.com'
+

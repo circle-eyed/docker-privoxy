@@ -1,0 +1,17 @@
+version: "3"
+services:
+    privoxy:
+        command: ["privoxy", "--no-daemon", "/etc/privoxy/config"]
+        container_name: dc-privoxy
+        image: cyclopszhao/privoxy:latest
+        networks:
+            - privoxy
+        ports:
+            - 8118:8118
+        volumes:
+            - ./config:/etc/privoxy/config
+
+networks:
+    privoxy:
+        driver: bridge
+

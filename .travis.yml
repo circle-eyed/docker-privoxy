@@ -1,0 +1,34 @@
+sudo: required
+
+env:
+    global:
+        - REPO=$DOCKER_USERNAME/privoxy
+        - COMMIT=${TRAVIS_COMMIT::8}
+
+language: python
+
+services:
+    - go
+
+before_install:
+    - docker version
+    - docker-compose version
+
+install:
+    - curl -LO https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64
+    - chmod +x container-structure-test-linux-amd64
+    - sudo mv container-structure-test-linux-amd64 /usr/local/bin/container-structure-test
+
+before_script:
+    - docker build -t $REPO:$COMMIT versions/privoxy
+
+script: 
+    - container-structure-test test --image $REPO:$COMMIT --config privoxy_test_config.yml
+
+after_success:
+    - export TAG=`if [ $TRAVIS_BRANCH == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH; fi`
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker tag $REPO:$COMMIT $REPO:$TAG
+    - docker push $REPO:$TAG
+    - docker logout
+
