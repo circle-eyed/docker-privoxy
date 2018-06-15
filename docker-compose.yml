@@ -9,7 +9,7 @@ services:
         ports:
             - 8118:8118
         volumes:
-            - ./config:/etc/privoxy/config
+            - ./privoxy.config:/etc/privoxy/config
 
 networks:
     privoxy:
