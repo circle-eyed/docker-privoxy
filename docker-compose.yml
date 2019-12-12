@@ -5,13 +5,12 @@ services:
         container_name: dc-privoxy
         image: cyclopszhao/privoxy:latest
         networks:
-            - privoxy
+            - nw-privoxy
         ports:
-            - 8118:8118
+            - "8118:8118"
         volumes:
             - ./privoxy.config:/etc/privoxy/config
 
 networks:
-    privoxy:
+    nw-privoxy:
         driver: bridge
-
